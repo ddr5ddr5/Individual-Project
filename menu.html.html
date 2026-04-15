@@ -205,6 +205,47 @@
 
         <!-- Load external JavaScript -->
         <script src="scripts.js"></script>
+
+        <script>
+  document.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", function () {
+      gtag("event", "navigation_click", {
+        event_category: "navigation",
+        event_label: this.getAttribute("href")
+      });
+    });
+  });
+
+  document.querySelectorAll("button").forEach(button => {
+    button.addEventListener("click", function () {
+      gtag("event", "button_click", {
+        event_category: "engagement",
+        event_label: this.textContent.trim() || this.id || "button"
+      });
+    });
+  });
+
+  document.querySelectorAll("form").forEach(form => {
+    form.addEventListener("submit", function () {
+      gtag("event", "form_submit", {
+        event_category: "engagement",
+        event_label: this.id || "form"
+      });
+    });
+  });
+
+  let startTime = Date.now();
+
+  window.addEventListener("beforeunload", function () {
+    let timeSpent = Math.round((Date.now() - startTime) / 1000);
+
+    gtag("event", "time_on_page", {
+      event_category: "engagement",
+      event_label: document.title,
+      value: timeSpent
+    });
+  });
+</script>
         
     </body>
 
